@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     private float _canFire;
     [SerializeField]
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private GameObject _tripleShot;
+    private bool _tripleShotActive = true;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             _canFire = Time.time + _fireRate;
-            Instantiate(_laserPrefab, transform.position + Vector3.up, Quaternion.identity);
+            if (_tripleShotActive)
+                Instantiate(_tripleShot, transform.position + Vector3.up, Quaternion.identity);
+            else
+                Instantiate(_laserPrefab, transform.position + Vector3.up, Quaternion.identity);
         }
     }
 
@@ -48,17 +54,17 @@ public class Player : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizonal, vertical, 0);
         transform.Translate(direction * Time.deltaTime * speed);
-        if (transform.position.x < -11.5)
+        if (transform.position.x < -10)
         {
-            transform.position = new Vector3(11.4f, transform.position.y, 0);
+            transform.position = new Vector3(10f, transform.position.y, 0);
         }
-        else if (transform.position.x > 11.5)
+        else if (transform.position.x > 10)
         {
-            transform.position = new Vector3(-11.4f, transform.position.y, 0);
+            transform.position = new Vector3(-10f, transform.position.y, 0);
         }
-        if (transform.position.y > 0)
+        if (transform.position.y > -1)
         {
-            transform.position = new Vector3(transform.position.x, 0, 0);
+            transform.position = new Vector3(transform.position.x, -1, 0);
         }
         else if (transform.position.y < -4)
         {
