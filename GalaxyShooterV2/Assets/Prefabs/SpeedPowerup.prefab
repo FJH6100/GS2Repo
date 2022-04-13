@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 358342031346524506}
   - component: {fileID: 1814009595}
   - component: {fileID: 1814009598}
-  - component: {fileID: 3837084289489814158}
+  - component: {fileID: 704111090639414981}
   m_Layer: 0
-  m_Name: TripleShotPowerup
+  m_Name: SpeedPowerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ed6681d697652144a913093bf7ad1d43, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5b8849e8703cd2a48856f693a7ce5940, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -145,7 +145,7 @@ Animator:
   m_GameObject: {fileID: 7526191786953363855}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ec954956b27c4f749a4c242b67fea159, type: 2}
+  m_Controller: {fileID: 9100000, guid: 956537d25163a2e4db0ef876ef6f6665, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -155,7 +155,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3837084289489814158
+--- !u!114 &704111090639414981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7526191786953363855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0448bab5702fe347a29f62abe450bce, type: 3}
+  m_Script: {fileID: 11500000, guid: 17c9e5271971753468b1c522c9a98a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupSpeed: 3

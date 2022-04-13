@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _powerup;
+    private GameObject[] _powerup;
     [SerializeField]
     private GameObject _enemy;
     [SerializeField]
@@ -43,7 +43,7 @@ public class SpawnManager : MonoBehaviour
         while (_alive)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
-            Instantiate(_powerup, spawnPosition, Quaternion.identity);
+            Instantiate(_powerup[Random.Range(0, _powerup.Length)], spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3f, 7f));
         }
     }

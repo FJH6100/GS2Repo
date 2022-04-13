@@ -429,7 +429,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff964e8e88599d47bf31253dce56aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _powerup: {fileID: 7526191786953363855, guid: fded8c114158f4443815f62d646d7976, type: 3}
+  _powerup:
+  - {fileID: 7526191786953363855, guid: fded8c114158f4443815f62d646d7976, type: 3}
+  - {fileID: 7526191786953363855, guid: bbb57150316976c4c85635da8d9a5e90, type: 3}
   _enemy: {fileID: 8230740016687245279, guid: a5c6ab36c7481a3488bc9ac09dfe0bd6, type: 3}
   _spawnInterval: 3
 --- !u!1 &2046589557
@@ -478,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ac8c22434a077c4e8683c7f4a7930e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  _speed: 5
   _laserPrefab: {fileID: 8425104154798284561, guid: 5b262ce2b9e410e4e8064eeba680dc69, type: 3}
   _fireRate: 0.1
   _spawnManager: {fileID: 1488471777}

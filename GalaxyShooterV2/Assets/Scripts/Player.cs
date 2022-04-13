@@ -5,12 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 5f;
+    private float _speed = 5f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private float _fireRate = .1f;
     private int _lives = 3;
+    private bool _isPowerupActive = false;
     private float _canFire;
     [SerializeField]
     private SpawnManager _spawnManager;
@@ -48,16 +49,34 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ActivatePowerup()
+    public void ActivateTripleShot()
     {
-        StartCoroutine(PowerupActive());
+        StartCoroutine(TripleShotActive());
     }
 
-    IEnumerator PowerupActive()
+    IEnumerator TripleShotActive()
     {
-        _tripleShotActive = true;
-        yield return new WaitForSeconds(5f);
-        _tripleShotActive = false;
+        if (!_isPowerupActive)
+        {
+            _tripleShotActive = true;
+            yield return new WaitForSeconds(5f);
+            _tripleShotActive = false;
+        }
+    }
+
+    public void ActivateSpeed()
+    {
+        StartCoroutine(SpeedActive());
+    }
+
+    IEnumerator SpeedActive()
+    {
+        if (!_isPowerupActive)
+        {
+            _speed *= 2f;
+            yield return new WaitForSeconds(5f);
+            _speed /= 2f;
+        }
     }
 
     void PlayerMovement()
@@ -65,7 +84,7 @@ public class Player : MonoBehaviour
         float horizonal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizonal, vertical, 0);
-        transform.Translate(direction * Time.deltaTime * speed);
+        transform.Translate(direction * Time.deltaTime * _speed);
         if (transform.position.x < -10)
         {
             transform.position = new Vector3(10f, transform.position.y, 0);
