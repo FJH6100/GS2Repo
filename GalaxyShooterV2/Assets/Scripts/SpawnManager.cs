@@ -5,6 +5,8 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _powerup;
+    [SerializeField]
     private GameObject _enemy;
     [SerializeField]
     private float _spawnInterval = 5f;
@@ -13,6 +15,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnPowerups());
     }
 
     // Update is called once per frame
@@ -29,10 +32,19 @@ public class SpawnManager : MonoBehaviour
     {
         while(_alive)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-9f, 9f), 7f, 0f);
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
             GameObject enemy = Instantiate(_enemy, spawnPosition, Quaternion.identity);
             enemy.transform.parent = this.transform;
             yield return new WaitForSeconds(_spawnInterval);
+        }
+    }
+    IEnumerator SpawnPowerups()
+    {
+        while (_alive)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
+            Instantiate(_powerup, spawnPosition, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(3f, 7f));
         }
     }
 }

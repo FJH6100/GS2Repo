@@ -9,14 +9,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
-    private float _fireRate = 1f;
+    private float _fireRate = .1f;
     private int _lives = 3;
     private float _canFire;
     [SerializeField]
     private SpawnManager _spawnManager;
     [SerializeField]
     private GameObject _tripleShot;
-    private bool _tripleShotActive = true;
+    private bool _tripleShotActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +46,18 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void ActivatePowerup()
+    {
+        StartCoroutine(PowerupActive());
+    }
+
+    IEnumerator PowerupActive()
+    {
+        _tripleShotActive = true;
+        yield return new WaitForSeconds(5f);
+        _tripleShotActive = false;
     }
 
     void PlayerMovement()
