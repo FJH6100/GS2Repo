@@ -16,8 +16,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private SpawnManager _spawnManager;
     [SerializeField]
+    private Canvas _canvas;
+    [SerializeField]
     private GameObject _tripleShot;
     private bool _tripleShotActive = false;
+    [SerializeField]
+    private GameObject _playerShield;
+    private bool _shielded = false;
+    private int _score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -39,13 +45,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void IncreaseScore()
+    {
+        _score += 10;
+        _canvas.GetComponent<UIManager>().SetText(_score);
+    }
+
     public void Damage()
     {
-        _lives--;
-        if (_lives == 0)
+        if (_shielded)
         {
-            _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);
+            _shielded = false;
+            _playerShield.SetActive(false);
+        }
+        else
+        {
+            _lives--;
+            if (_lives == 0)
+            {
+                _spawnManager.OnPlayerDeath();
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    public void ActivateShield()
+    {
+        if (!_shielded)
+        {
+            _playerShield.SetActive(true);
+            _shielded = true;
         }
     }
 
