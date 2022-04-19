@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            _canvas.GetComponent<UIManager>().SetLivesImage(_lives);
             if (_lives == 0)
             {
                 _spawnManager.OnPlayerDeath();
