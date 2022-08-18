@@ -22,13 +22,19 @@ public class Player : MonoBehaviour
     private bool _tripleShotActive = false;
     [SerializeField]
     private GameObject _playerShield;
+    [SerializeField]
+    private GameObject _leftDamage;
+    [SerializeField]
+    private GameObject _rightDamage;
     private bool _shielded = false;
     private int _score = 0;
 
+    private AudioSource _audio;
     // Start is called before the first frame update
     void Start()
     {
         _canFire = Time.time;
+        _audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -42,6 +48,7 @@ public class Player : MonoBehaviour
                 Instantiate(_tripleShot, transform.position + Vector3.up, Quaternion.identity);
             else
                 Instantiate(_laserPrefab, transform.position + Vector3.up, Quaternion.identity);
+            _audio.Play();
         }
     }
 
@@ -67,6 +74,14 @@ public class Player : MonoBehaviour
                 _spawnManager.OnPlayerDeath();
                 Destroy(this.gameObject);
                 _canvas.GetComponent<UIManager>().GameOver();
+            }
+            else if (_lives == 1)
+            {
+                _rightDamage.SetActive(true);
+            }
+            else if (_lives == 2)
+            {
+                _leftDamage.SetActive(true);
             }
         }
     }
