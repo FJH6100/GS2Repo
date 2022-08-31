@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 358342031346524506}
   - component: {fileID: 1814009595}
   - component: {fileID: 1814009598}
-  - component: {fileID: 704111090639414981}
+  - component: {fileID: 5141289805066326444}
   m_Layer: 0
   m_Name: SpeedPowerup
   m_TagString: Untagged
@@ -155,7 +155,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &704111090639414981
+--- !u!114 &5141289805066326444
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +164,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7526191786953363855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c9e5271971753468b1c522c9a98a6d, type: 3}
+  m_Script: {fileID: 11500000, guid: c6e01e3fa8ac06b48b574cfa786768ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupSpeed: 3
+  _type: 1

@@ -28,6 +28,11 @@ public class Player : MonoBehaviour
     private GameObject _rightDamage;
     private bool _shielded = false;
     private int _score = 0;
+    private int _shieldPoints = 2;
+    [SerializeField]
+    private int _maxAmmo = 20;
+    private int _ammoLeft;
+    private GameObject _thruster;
 
     private AudioSource _audio;
     // Start is called before the first frame update
@@ -35,20 +40,35 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time;
         _audio = GetComponent<AudioSource>();
+        _thruster = transform.Find("Thruster").gameObject;
+        _ammoLeft = _maxAmmo;
+        _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerMovement();
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoLeft > 0)
         {
+            _ammoLeft--;
+            _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
             _canFire = Time.time + _fireRate;
             if (_tripleShotActive)
                 Instantiate(_tripleShot, transform.position + Vector3.up, Quaternion.identity);
             else
                 Instantiate(_laserPrefab, transform.position + Vector3.up, Quaternion.identity);
             _audio.Play();
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _speed *= 2f;
+            _thruster.transform.localScale = new Vector3(2f, 2f, 2f);
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _speed /= 2f;
+            _thruster.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
         }
     }
 
@@ -62,8 +82,16 @@ public class Player : MonoBehaviour
     {
         if (_shielded)
         {
-            _shielded = false;
-            _playerShield.SetActive(false);
+            _shieldPoints--;
+            if (_shieldPoints == 0)
+            {
+                _shielded = false;
+                _playerShield.SetActive(false);
+            }
+            else
+            {
+                _playerShield.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
+            }
         }
         else
         {
@@ -92,6 +120,11 @@ public class Player : MonoBehaviour
         {
             _playerShield.SetActive(true);
             _shielded = true;
+        }
+        if(_shieldPoints < 2)
+        {
+            _shieldPoints = 2;
+            _playerShield.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
         }
     }
 
@@ -123,6 +156,11 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(5f);
             _speed /= 2f;
         }
+    }
+    public void RefillAmmo()
+    {
+        _ammoLeft = _maxAmmo;
+        _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
     }
 
     void PlayerMovement()
