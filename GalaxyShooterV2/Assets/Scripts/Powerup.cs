@@ -9,7 +9,9 @@ public class Powerup : MonoBehaviour
         Shield,
         Speed,
         TripleShot,
-        AmmoRefill
+        AmmoRefill,
+        Health,
+        InfiniteAmmo
     };
     [SerializeField]
     private float _powerupSpeed = 3f;
@@ -46,6 +48,12 @@ public class Powerup : MonoBehaviour
                         break;
                     case PowerupType.AmmoRefill:
                         player.RefillAmmo();
+                        break;
+                    case PowerupType.Health:
+                        player.RestoreHealth();
+                        break;
+                    case PowerupType.InfiniteAmmo:
+                        player.ActivateInfiniteAmmo();
                         break;
                 }
             }

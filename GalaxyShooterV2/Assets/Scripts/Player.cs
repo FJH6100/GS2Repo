@@ -32,7 +32,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _maxAmmo = 20;
     private int _ammoLeft;
+    private bool _infiniteAmmo;
     private GameObject _thruster;
+    private float _thrusterAmount;
+    private bool _thrusting;
+    private bool _cooldown;
 
     private AudioSource _audio;
     // Start is called before the first frame update
@@ -41,7 +45,11 @@ public class Player : MonoBehaviour
         _canFire = Time.time;
         _audio = GetComponent<AudioSource>();
         _thruster = transform.Find("Thruster").gameObject;
+        _thrusterAmount = 1f;
+        _thrusting = false;
+        _cooldown = false;
         _ammoLeft = _maxAmmo;
+        _infiniteAmmo = false;
         _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
     }
 
@@ -51,8 +59,11 @@ public class Player : MonoBehaviour
         PlayerMovement();
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoLeft > 0)
         {
-            _ammoLeft--;
-            _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
+            if (!_infiniteAmmo)
+            {
+                _ammoLeft--;
+                _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
+            }
             _canFire = Time.time + _fireRate;
             if (_tripleShotActive)
                 Instantiate(_tripleShot, transform.position + Vector3.up, Quaternion.identity);
@@ -60,16 +71,44 @@ public class Player : MonoBehaviour
                 Instantiate(_laserPrefab, transform.position + Vector3.up, Quaternion.identity);
             _audio.Play();
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_cooldown && !_thrusting)
         {
-            _speed *= 2f;
-            _thruster.transform.localScale = new Vector3(2f, 2f, 2f);
+            StartThrust();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) && !_cooldown && _thrusting)
         {
-            _speed /= 2f;
-            _thruster.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+            EndThrust();
         }
+        if (_thrusterAmount > 0 && _thrusting)
+            _thrusterAmount -= .5f * Time.deltaTime;
+
+        if (_thrusterAmount < 1 && !_thrusting)
+            _thrusterAmount += .5f * Time.deltaTime;
+
+        if (_thrusterAmount <= 0)
+        {
+            EndThrust();
+            _cooldown = true;
+        }
+        if (_thrusterAmount >= 1)
+        {
+            _cooldown = false;
+        }
+        _canvas.GetComponent<UIManager>().UpdateThruster(_thrusterAmount);
+    }
+
+    public void StartThrust()
+    {
+        _thrusting = true;
+        _speed *= 2f;
+        _thruster.transform.localScale = new Vector3(2f, 2f, 2f);
+    }
+
+    public void EndThrust()
+    {
+        _thrusting = false;
+        _speed /= 2f;
+        _thruster.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
     }
 
     public void IncreaseScore()
@@ -157,10 +196,43 @@ public class Player : MonoBehaviour
             _speed /= 2f;
         }
     }
+    public void ActivateInfiniteAmmo()
+    {
+        StartCoroutine(InfiniteAmmoActive());
+    }
+
+    IEnumerator InfiniteAmmoActive()
+    {
+        if (!_isPowerupActive)
+        {
+            _infiniteAmmo = true;
+            _canvas.GetComponent<UIManager>().AmmoTextColor(0, 255, 255);
+            yield return new WaitForSeconds(5f);
+            _infiniteAmmo = false;
+            _canvas.GetComponent<UIManager>().AmmoTextColor(255, 255, 255);
+        }
+    }
     public void RefillAmmo()
     {
         _ammoLeft = _maxAmmo;
         _canvas.GetComponent<UIManager>().SetAmmoText(_ammoLeft, _maxAmmo);
+    }
+
+    public void RestoreHealth()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+            if (_lives == 2)
+            {
+                _rightDamage.SetActive(false);
+            }
+            else if (_lives == 3)
+            {
+                _leftDamage.SetActive(false);
+            }
+            _canvas.GetComponent<UIManager>().SetLivesImage(_lives);
+        }
     }
 
     void PlayerMovement()

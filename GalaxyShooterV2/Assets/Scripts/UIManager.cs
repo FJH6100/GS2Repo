@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Image _livesImage;
     [SerializeField]
+    private Image _thrusterBar;
+    [SerializeField]
     private Sprite[] _livesSprites;
 
     public void SetLivesImage(int lives)
@@ -30,9 +32,19 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + score;
     }
 
+    public void AmmoTextColor(float r, float g, float b)
+    {
+        _ammoText.color = new Color(r, g, b);
+    }
+
     public void SetAmmoText(int ammoLeft, int maxAmmo)
     {
         _ammoText.text = ammoLeft + " / " + maxAmmo;
+    }
+
+    public void UpdateThruster(float thrust)
+    {
+        _thrusterBar.fillAmount = thrust;
     }
 
     public void GameOver()
